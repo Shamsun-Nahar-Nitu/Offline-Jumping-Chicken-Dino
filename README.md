@@ -8,6 +8,11 @@ A fun, retro-style endless runner game inspired by Chrome's offline dinosaur gam
 
 ## 🎮 About The Game
 
+
+https://github.com/user-attachments/assets/cf0b9c27-22d9-4228-a163-de453cee0205
+
+
+
 Chicken Runner is an endless running game where you control a brave chicken trying to avoid cacti obstacles. The game features:
 
 - **Pixel Art Chicken**: Hand-crafted pixel art character with running animation
