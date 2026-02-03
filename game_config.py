@@ -1,7 +1,4 @@
 # Game Configuration File
-
-
-# Screen dimensions
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 400
 
@@ -10,28 +7,18 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GRAY = (83, 83, 83)
 CLOUD_GRAY = (200, 200, 200)
+NIGHT_COLOR = (32, 33, 36) # Added for Day/Night cycle
 
-# Frame rate - controls how fast the game runs
 FPS = 60
-
-# Ground settings
 GROUND_HEIGHT = 50
 GROUND_Y = SCREEN_HEIGHT - GROUND_HEIGHT
-
-# Chicken
-GRAVITY = 1.2  # How fast the chicken falls
-JUMP_STRENGTH = -20  # Negative because up is negative in pygame
-CHICKEN_X = 80  # Chicken's horizontal position (fixed)
-
-# Game speed
+GRAVITY = 1.2
+JUMP_STRENGTH = -20
+CHICKEN_X = 80
 INITIAL_GAME_SPEED = 6
-SPEED_INCREMENT = 0.005  # How much speed increases per frame
-
-# Obstacle settings
-MIN_OBSTACLE_DISTANCE = 300  # Minimum space between obstacles
-MAX_OBSTACLE_DISTANCE = 600  # Maximum space between obstacles
-
-# Cloud settings
+SPEED_INCREMENT = 0.005
+MIN_OBSTACLE_DISTANCE = 300
+MAX_OBSTACLE_DISTANCE = 600
 CLOUD_SPEED = 2
 MIN_CLOUD_DISTANCE = 200
 MAX_CLOUD_DISTANCE = 400
