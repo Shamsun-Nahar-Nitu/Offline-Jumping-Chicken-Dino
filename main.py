@@ -10,6 +10,7 @@ from score import Score
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    pygame.display.set_caption("Offline Jumping Chicken")
     clock = pygame.time.Clock()
     
     # Initialize objects
@@ -31,6 +32,7 @@ def main():
                 sys.exit()
             
             if event.type == pygame.KEYDOWN:
+                # --- JUMP / RESTART LOGIC ---
                 if event.key == pygame.K_SPACE:
                     if game_active:
                         chicken.jump()
@@ -40,6 +42,11 @@ def main():
                         obstacles.reset()
                         score.reset()
                         game_speed = INITIAL_GAME_SPEED
+
+                # --- RESET HIGH SCORE LOGIC ---
+                if event.key == pygame.K_r: # Press 'R' to reset high score
+                    score.high_score = 0
+                    score.save_high_score()
 
         # 2. UPDATE LOGIC (Only if game is running)
         if game_active:
@@ -55,6 +62,7 @@ def main():
 
         # 3. DRAWING LOGIC (Always draw, even if paused)
         curr = score.get_score()
+        # Toggle Day/Night based on score (every 500 points)
         bg_color, txt_color = (NIGHT_COLOR, WHITE) if (curr // 500) % 2 == 1 else (WHITE, BLACK)
         
         screen.fill(bg_color)
@@ -69,6 +77,10 @@ def main():
             over_text = font.render("GAME OVER - Press SPACE", True, txt_color)
             text_rect = over_text.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
             screen.blit(over_text, text_rect)
+            
+            reset_hint = pygame.font.Font(None, 25).render("Press 'R' to Reset High Score", True, txt_color)
+            hint_rect = reset_hint.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + 50))
+            screen.blit(reset_hint, hint_rect)
             
         pygame.display.flip()
         clock.tick(FPS)
