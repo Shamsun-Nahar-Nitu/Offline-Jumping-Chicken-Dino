@@ -12,6 +12,7 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     
+    # Initialize objects
     chicken = Chicken()
     obstacles = ObstacleManager()
     ground = Ground()
@@ -20,16 +21,27 @@ def main():
     
     game_active = True
     game_speed = INITIAL_GAME_SPEED
+    font = pygame.font.Font(None, 50)
 
     while True:
+        # 1. EVENT HANDLING
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    chicken.jump()
+                    if game_active:
+                        chicken.jump()
+                    else:
+                        # RESTART LOGIC: Reset everything
+                        game_active = True
+                        obstacles.reset()
+                        score.reset()
+                        game_speed = INITIAL_GAME_SPEED
 
+        # 2. UPDATE LOGIC (Only if game is running)
         if game_active:
             chicken.update()
             obstacles.update(game_speed)
@@ -39,24 +51,26 @@ def main():
             game_speed += SPEED_INCREMENT
 
             if obstacles.check_collision(chicken.get_rect()):
-                game_active = False # Game pauses on hit
+                game_active = False # Triggers the "Game Over" state
 
-            # --- DAY/NIGHT LOGIC ---
-            curr = score.get_score()
-            # Switches every 500 points
-            if (curr // 500) % 2 == 1:
-                bg_color, txt_color = NIGHT_COLOR, WHITE
-            else:
-                bg_color, txt_color = WHITE, BLACK
+        # 3. DRAWING LOGIC (Always draw, even if paused)
+        curr = score.get_score()
+        bg_color, txt_color = (NIGHT_COLOR, WHITE) if (curr // 500) % 2 == 1 else (WHITE, BLACK)
+        
+        screen.fill(bg_color)
+        clouds.draw(screen)
+        ground.draw(screen)
+        obstacles.draw(screen)
+        chicken.draw(screen)
+        score.draw(screen, txt_color)
 
-            screen.fill(bg_color)
-            clouds.draw(screen)
-            ground.draw(screen)
-            obstacles.draw(screen)
-            chicken.draw(screen)
-            score.draw(screen, txt_color)
+        # Show Game Over Message
+        if not game_active:
+            over_text = font.render("GAME OVER - Press SPACE", True, txt_color)
+            text_rect = over_text.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+            screen.blit(over_text, text_rect)
             
-            pygame.display.flip()
+        pygame.display.flip()
         clock.tick(FPS)
 
 if __name__ == "__main__":
